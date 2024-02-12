@@ -40,7 +40,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <main className="dark text-foreground bg-background mx-auto h-lvh">
+        <main className="dark text-foreground bg-background mx-auto min-h-dvh">
           <Navbar isBordered>
             <NavbarContent className="sm:hidden" justify="start">
               <NavbarMenuToggle />

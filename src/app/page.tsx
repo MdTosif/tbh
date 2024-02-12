@@ -1,37 +1,35 @@
 "use client";
 import {
   Button,
-  ButtonGroup,
   Card,
   CardBody,
-  CardFooter,
   CardHeader,
-  Divider,
   Image,
-  Slider,
-  Tab,
-  Tabs,
+  Input,
 } from "@nextui-org/react";
-import { usePathname } from "next/navigation";
-import React from "react";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 export default function Home() {
-  const [selected, setSelected] = React.useState("Date");
-  const questionsMap = {
-    Date: ["Would like to meet", "would marry", "would date", "would kill"],
-    Party: ["Would like to meet", "would date", "would kill"],
-    Friend: [
-      "Would like to meet",
-      "would marry",
-      "would date",
-      "would kill",
-      "would do crimes with",
-    ],
-  };
+  const [name, setName] = useState("");
+  const [error, setError] = useState("");
+  const router = useRouter();
+  async function onSubmit() {
+    const data = await fetch("/api/user", {
+      method: "POST",
+      body: JSON.stringify({ name }),
+    });
+    let res = await data.json();
+    if (data.status === 200) {
+      router.push(`/tbh/${res.user.id}`);
+    } else {
+      setError(res.error || "");
+    }
+  }
   return (
     <Card
       isBlurred
-      className="max-w-[400px] border mx-auto shadow-xl border-foreground-50 dark:bg-foreground-50/50"
+      className="max-w-[400px] my-auto border mx-auto shadow-xl border-foreground-50 dark:bg-foreground-50/50"
     >
       <CardHeader className="flex gap-3">
         <Image
@@ -46,51 +44,36 @@ export default function Home() {
           <p className="text-small text-default-500">nextui.org</p>
         </div>
       </CardHeader>
-      <Divider />
       <CardBody>
-        <Tabs
-          variant="bordered"
-          selectedKey={selected}
-          onSelectionChange={(key) => setSelected(key as string)}
+        <form
+          className="grid grid-cols-1 gap-4"
+          onSubmit={(e) => {
+            e.preventDefault();
+            onSubmit();
+          }}
         >
-          {Object.entries(questionsMap).map(([tabKey, questions], idx) => (
-            <Tab key={tabKey + idx} title={tabKey}>
-              {questions.map((e, idx) => (
-                <Slider
-                  className="text-3xl"
-                  key={tabKey + idx}
-                  label={e}
-                  color="foreground"
-                  size="md"
-                  step={10}
-                  marks={[
-                    {
-                      value: 20,
-                      label: "20%",
-                    },
-                    {
-                      value: 50,
-                      label: "50%",
-                    },
-                    {
-                      value: 80,
-                      label: "80%",
-                    },
-                  ]}
-                  defaultValue={20}
-                />
-              ))}
-            </Tab>
-          ))}
-        </Tabs>
-      </CardBody>
-      <CardFooter>
-        <ButtonGroup>
-          <Button variant="ghost" color="secondary">
-            Submit
+          <Input
+            type="text"
+            label="Name"
+            variant="bordered"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+          {error && (
+            <Card className="bg-danger-100">
+              <CardBody>{error}</CardBody>
+            </Card>
+          )}
+          <Button
+            type="submit"
+            variant="bordered"
+            color="secondary"
+            className="max-w-7"
+          >
+            Create
           </Button>
-        </ButtonGroup>
-      </CardFooter>
+        </form>
+      </CardBody>
     </Card>
   );
 }
