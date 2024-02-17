@@ -1,5 +1,4 @@
-import { PrismaClient } from "@prisma/client";
-const prisma = new PrismaClient();
+import prisma from "./db";
 
 export async function getQuestionMap() {
   const questions = await prisma.questions.findMany();

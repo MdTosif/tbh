@@ -1,15 +1,14 @@
-import { PrismaClient } from "@prisma/client";
-const prisma = new PrismaClient();
+import prisma from "./db";
 
-export async function getAnswers(user_id: number) {
+export async function getAnswers(user_id: string) {
   let res: {
     question: string;
-    count: number;
-    total: number;
+    count: BigInt;
+    total: BigInt;
     tab: string;
-    id: string;
+    id: BigInt;
   }[] =
-    await prisma.$queryRaw`select count(*) as count, sum(answers.answer) as total, questions.question as question, questions.tab as tab, answers.question_id as id  from answers left join questions on answers.question_id = questions.id  where answers.user_id = ${user_id} group by answers.question_id, questions.question, questions.tab;`;
+    await prisma.$queryRaw`select count(*) as count, sum(answers.answer) as total, questions.question as question, questions.tab as tab, answers.question_id as id  from answers left join questions on answers.question_id = questions.id  where answers.user_id = ${parseInt(user_id)} group by answers.question_id, questions.question, questions.tab;`;
   const qMap: Record<
     string,
     { question: string; count: number; total: number; id: string }[]
