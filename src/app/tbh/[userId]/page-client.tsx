@@ -14,6 +14,7 @@ import {
 } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
 import React from "react";
+import NextPrevBtns from "tbh/components/nextPrev";
 
 export default function TBH({
   questionsMap,
@@ -99,30 +100,71 @@ export default function TBH({
         </form>
       </CardBody>
       <CardFooter>
-        <ButtonGroup>
+        {/* <ButtonGroup>
           <Button
             variant="ghost"
             color="secondary"
-            onClick={(e) => {
-              if (selected === Object.keys(questionsMap).at(-1)) {
-                fetch("/api/answers", {
-                  body: JSON.stringify({ userId, formData }),
-                  method: "POST",
-                }).then((res) => {
-                  res.status == 200 && router.push("/success");
-                });
-              } else {
-                setSelected((e) => {
-                  return Object.keys(questionsMap).at(
-                    Object.keys(questionsMap).indexOf(e) + 1,
-                  ) as string;
-                });
-              }
-            }}
+            onClick={}
           >
             {selected === Object.keys(questionsMap).at(-1) ? "Submit" : "Next"}
           </Button>
-        </ButtonGroup>
+          {selected !== Object.keys(questionsMap).at(0) && (
+            <Button
+              variant="ghost"
+              color="secondary"
+              onClick={(e) => {
+                if (selected === Object.keys(questionsMap).at(-1)) {
+                  fetch("/api/answers", {
+                    body: JSON.stringify({ userId, formData }),
+                    method: "POST",
+                  }).then((res) => {
+                    res.status == 200 && router.push("/success");
+                  });
+                } else {
+                  setSelected((e) => {
+                    return Object.keys(questionsMap).at(
+                      Object.keys(questionsMap).indexOf(e) + 1,
+                    ) as string;
+                  });
+                }
+              }}
+            >
+              {"Back"}
+            </Button>
+          )}
+        </ButtonGroup> */}
+        <NextPrevBtns
+          questionsMap={questionsMap}
+          onNext={() => {
+            if (selected === Object.keys(questionsMap).at(-1)) {
+              fetch("/api/answers", {
+                body: JSON.stringify({ userId, formData }),
+                method: "POST",
+              }).then((res) => {
+                res.status == 200 && router.push("/success");
+              });
+            } else {
+              setSelected((e) => {
+                return Object.keys(questionsMap).at(
+                  Object.keys(questionsMap).indexOf(e) + 1,
+                ) as string;
+              });
+            }
+          }}
+          onBack={() => {
+            if (selected === Object.keys(questionsMap).at(0)) {
+            } else {
+              setSelected((e) => {
+                return Object.keys(questionsMap).at(
+                  Object.keys(questionsMap).indexOf(e) + 1,
+                ) as string;
+              });
+            }
+          }}
+          isNextNotSubmit={selected === Object.keys(questionsMap).at(-1)}
+          enableBack={selected !== Object.keys(questionsMap).at(0)}
+          isSubmit={true}
+        />
       </CardFooter>
     </Card>
   );
