@@ -53,10 +53,10 @@ export default function Dashboard({
   }
 
   return (
-    <>
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-2 mx-auto ">
       <Card
         isBlurred
-        className="max-w-[400px] border mx-auto shadow-xl border-foreground-50 dark:bg-foreground-50/50"
+        className="w-full border  shadow-xl border-foreground-50 dark:bg-foreground-50/50 justify-center items-center"
       >
         {Object.keys(answerMap).length > 0 ? (
           <>
@@ -148,15 +148,15 @@ export default function Dashboard({
         )}
       </Card>
 
-      <Card className="max-w-[400px] border mx-auto shadow-xl border-foreground-50 dark:bg-foreground-50/50">
+      <Card className="w-full border  shadow-xl border-foreground-50 dark:bg-foreground-50/50 justify-center items-center">
         <CardBody className="gap-3">
           <div>Share link with your friends: </div>
-          <Snippet>{`${window.location.host}/tbh/`}</Snippet>
+          <Snippet>{`${window.location.host}/tbh/${user?.id}`}</Snippet>
           <Button
             className="max-w-40"
             onClick={() => {
               openTwitterAppWithPreTypedTweet(
-                `Give me a TBH!! \n ${window.location.host}/tbh/`,
+                `Give me a TBH!! \n ${window.location.host}/tbh/${user?.id}`,
               );
             }}
           >
@@ -164,6 +164,6 @@ export default function Dashboard({
           </Button>
         </CardBody>
       </Card>
-    </>
+    </div>
   );
 }

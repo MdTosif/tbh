@@ -56,7 +56,7 @@ export default function RootLayout({
               <NavbarBrand>
                 <p className="font-bold text-inherit">TBH</p>
               </NavbarBrand>
-              <NavbarItem>
+              {/* <NavbarItem>
                 <Link color="foreground" href="#">
                   Features
                 </Link>
@@ -65,21 +65,21 @@ export default function RootLayout({
                 <Link href="#" aria-current="page" color="warning">
                   Customers
                 </Link>
-              </NavbarItem>
+              </NavbarItem> */}
               <NavbarItem>
-                <Link color="foreground" href="#">
-                  Integrations
+                <Link color="foreground" href="/dashboard">
+                  Dashboard
                 </Link>
               </NavbarItem>
             </NavbarContent>
 
             <NavbarContent justify="end">
-              <NavbarItem className="hidden lg:flex">
+              {/* <NavbarItem className="hidden lg:flex">
                 <Link href="#">Login</Link>
-              </NavbarItem>
+              </NavbarItem> */}
               <NavbarItem>
-                <Button as={Link} color="secondary" href="#" variant="ghost">
-                  Sign Up
+                <Button as={Link} color="secondary" href="/" variant="ghost">
+                  Create Account
                 </Button>
               </NavbarItem>
             </NavbarContent>

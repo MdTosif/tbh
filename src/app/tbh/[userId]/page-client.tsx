@@ -1,7 +1,5 @@
 "use client";
 import {
-  Button,
-  ButtonGroup,
   Card,
   CardBody,
   CardFooter,
@@ -19,9 +17,15 @@ import NextPrevBtns from "tbh/components/nextPrev";
 export default function TBH({
   questionsMap,
   userId,
+  user,
 }: {
   questionsMap: Record<string, { question: string; id: number }[]>;
   userId: string;
+  user: {
+    id: bigint;
+    created_at: Date;
+    name: string;
+  } | null;
 }) {
   const [selected, setSelected] = React.useState(Object.keys(questionsMap)[0]);
   const [formData, setFormData] = React.useState<Record<number, number>>({});
@@ -41,8 +45,10 @@ export default function TBH({
           width={40}
         />
         <div className="flex flex-col">
-          <p className="text-md">NextUI</p>
-          <p className="text-small text-default-500">nextui.org</p>
+          <p className="text-md">TBH</p>
+          <p className="text-small text-default-500">
+            Give {user?.name} a tbh!!
+          </p>
         </div>
       </CardHeader>
       <Divider />
@@ -100,39 +106,6 @@ export default function TBH({
         </form>
       </CardBody>
       <CardFooter>
-        {/* <ButtonGroup>
-          <Button
-            variant="ghost"
-            color="secondary"
-            onClick={}
-          >
-            {selected === Object.keys(questionsMap).at(-1) ? "Submit" : "Next"}
-          </Button>
-          {selected !== Object.keys(questionsMap).at(0) && (
-            <Button
-              variant="ghost"
-              color="secondary"
-              onClick={(e) => {
-                if (selected === Object.keys(questionsMap).at(-1)) {
-                  fetch("/api/answers", {
-                    body: JSON.stringify({ userId, formData }),
-                    method: "POST",
-                  }).then((res) => {
-                    res.status == 200 && router.push("/success");
-                  });
-                } else {
-                  setSelected((e) => {
-                    return Object.keys(questionsMap).at(
-                      Object.keys(questionsMap).indexOf(e) + 1,
-                    ) as string;
-                  });
-                }
-              }}
-            >
-              {"Back"}
-            </Button>
-          )}
-        </ButtonGroup> */}
         <NextPrevBtns
           questionsMap={questionsMap}
           onNext={() => {
@@ -161,7 +134,7 @@ export default function TBH({
               });
             }
           }}
-          isNextNotSubmit={selected === Object.keys(questionsMap).at(-1)}
+          isNextNotSubmit={selected !== Object.keys(questionsMap).at(-1)}
           enableBack={selected !== Object.keys(questionsMap).at(0)}
           isSubmit={true}
         />
